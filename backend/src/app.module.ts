@@ -5,11 +5,11 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AdvisorsModule } from './advisors/advisors.module';
 import { QuizModule } from './quiz/quiz.module';
-
+import { MessagesModule } from './messages/messages.module';
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true }),
-    TypeOrmModule.forRootAsync({
+    ConfigModule.forRoot({isGlobal: true}), //читаем env
+    TypeOrmModule.forRootAsync({            //подключение к базе данных
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
@@ -19,10 +19,11 @@ import { QuizModule } from './quiz/quiz.module';
           rejectUnauthorized: false,
         },
         synchronize: false,
-        autoLoadEntities: true, // <-- Возвращаем автоматический поиск сущностей
+        autoLoadEntities: true, //возвращаем автоматический поиск сущностей
       }),
     }),
     AdvisorsModule,
+    MessagesModule,
     QuizModule,
   ],
   controllers: [AppController],

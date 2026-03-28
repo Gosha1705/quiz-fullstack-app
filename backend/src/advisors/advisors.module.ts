@@ -5,7 +5,7 @@ import { AdvisorsController } from './advisors.controller';
 import { Advisor } from './entities/advisor.entity';
 
 @Module({
-  // Вот эта строчка импорта дает нашему сервису доступ к БД!
+  
   imports: [TypeOrmModule.forFeature([Advisor])],
   controllers: [AdvisorsController],
   providers: [AdvisorsService],

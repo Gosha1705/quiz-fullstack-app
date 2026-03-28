@@ -1,6 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn } from 'typeorm';
 
-@Entity('advisors') // <-- ИМЕННО ЭТА СТРОЧКА СОЗДАЕТ МЕТАДАННЫЕ, КОТОРЫХ НАМ НЕ ХВАТАЛО!
+@Entity('advisors') 
 export class Advisor {
   @PrimaryGeneratedColumn()
   id: number;
