@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation"; // Добавили роутер!
+import { useState, useEffect } from "react"; 
+import { useRouter } from "next/navigation";
 
 const questions = [
   {
@@ -26,8 +26,12 @@ export default function QuizPage() {
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   
-  const router = useRouter(); // Инициализируем роутер
-
+  const router = useRouter(); 
+useEffect(() => {
+    console.log("TRACKING EVENT: quiz_started", {
+      timestamp: new Date().toISOString(),
+    });
+  }, []);
   const handleAnswer = (option: string) => {
     const questionId = questions[currentStep].id;
     setAnswers({ ...answers, [questionId]: option });
@@ -48,7 +52,11 @@ export default function QuizPage() {
 
         const data = await response.json();
         
-        // СОХРАНЯЕМ В ПАМЯТЬ БРАУЗЕРА И ДЕЛАЕМ РЕДИРЕКТ
+      
+        console.log("TRACKING EVENT: match_found", {
+          matchesCount: data.matches?.length || 0,
+          timestamp: new Date().toISOString(),
+        });
         localStorage.setItem("quizMatches", JSON.stringify(data.matches));
         router.push("/results"); 
 

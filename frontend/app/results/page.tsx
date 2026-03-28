@@ -11,7 +11,7 @@ export default function ResultsPage() {
     // Достаем результаты из памяти браузера при загрузке страницы
     const savedMatches = localStorage.getItem("quizMatches");
     if (savedMatches) {
-      setMatches(JSON.stringify(JSON.parse(savedMatches)));
+      // Оставляем ТОЛЬКО эту строчку, она правильная:
       setMatches(JSON.parse(savedMatches));
     } else {
       // Если результатов нет, отправляем обратно на квиз
@@ -62,9 +62,12 @@ export default function ResultsPage() {
                 </p>
               </div>
 
-              <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 rounded-xl transition-colors">
-                Написать сообщение
-              </button>
+              <button 
+  onClick={() => router.push(`/advisor/${match.advisor.id}`)}
+  className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 rounded-xl transition-colors">
+  Написать сообщение
+  </button>
+
             </div>
           ))}
         </div>
