@@ -9,19 +9,17 @@ import { MessagesModule } from './messages/messages.module';
 @Module({
   imports: [
     ConfigModule.forRoot({isGlobal: true}), //читаем env
-    TypeOrmModule.forRootAsync({            //подключение к базе данных
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
-        type: 'postgres',
-        url: configService.get<string>('DATABASE_URL'),
-        ssl: {
-          rejectUnauthorized: false,
-        },
-        synchronize: false,
-        autoLoadEntities: true, //возвращаем автоматический поиск сущностей
-      }),
-    }),
+   TypeOrmModule.forRoot({
+  type: 'postgres',
+  // Если есть ссылка в Render - берем ее, иначе используем локальную
+  url: process.env.DATABASE_URL || 'postgresql://postgres:postgres@localhost:5432/couplr_db',
+  
+  // Для облачной базы Neon ОБЯЗАТЕЛЬНО нужен SSL
+  ssl: process.env.DATABASE_URL ? { rejectUnauthorized: false } : false,
+  
+  autoLoadEntities: true,
+  synchronize: false, // (Оставь то значение synchronize, которое у тебя стояло до этого)
+}),
     AdvisorsModule,
     MessagesModule,
     QuizModule,
