@@ -11,14 +11,13 @@ import { MessagesModule } from './messages/messages.module';
     ConfigModule.forRoot({isGlobal: true}), //читаем env
    TypeOrmModule.forRoot({
   type: 'postgres',
-  // Если есть ссылка в Render - берем ее, иначе используем локальную
-  url: process.env.DATABASE_URL || 'postgresql://postgres:postgres@localhost:5432/couplr_db',
-  
-  // Для облачной базы Neon ОБЯЗАТЕЛЬНО нужен SSL
-  ssl: process.env.DATABASE_URL ? { rejectUnauthorized: false } : false,
-  
+  // Вставь свою ссылку Neon внутри кавычек:
+  url: 'postgresql://neondb_owner:npg_o7NWzlYGwvV2@ep-curly-sky-adpotklx-pooler.c-2.us-east-1.aws.neon.tech/neondb?sslmode=require',
+  ssl: {
+    rejectUnauthorized: false,
+  },
   autoLoadEntities: true,
-  synchronize: false, // (Оставь то значение synchronize, которое у тебя стояло до этого)
+  synchronize: false, // Оставь как было в твоем коде (true или false)
 }),
     AdvisorsModule,
     MessagesModule,
