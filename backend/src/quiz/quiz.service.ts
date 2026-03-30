@@ -13,20 +13,48 @@ export class QuizService {
     @InjectRepository(Advisor) private advisorRepo: Repository<Advisor>,
   ) {}
 
-  async processQuiz(sessionId: string, answers: any) {
+ async processQuiz(sessionId: string, answers: any) {
     const quizResponse = this.quizResponseRepo.create({ sessionId, answers });
     const savedResponse = await this.quizResponseRepo.save(quizResponse);
 
     const advisors = await this.advisorRepo.find();
 
+    
     const scoredAdvisors = advisors.map(advisor => {
-      const score = Math.floor(Math.random() * 50) + 50; 
+      let score = 0;
+
+    
+      const userAssets = Number(answers.assets || answers.capital || 0);
+      
+   
+      if (userAssets >= advisor.minAssetThreshold) {
+        score += 50;
+      } else {
+      
+        score -= 50; 
+      }
+
+   
+      const userGoal = answers.goal || answers.interest || answers.specialization || "";
+      
+     
+      if (advisor.specializations && advisor.specializations.includes(userGoal)) {
+        score += 40;
+      }
+
+   
+      score += Math.floor(Math.random() * 5);
+
       return { advisor, score };
     });
 
+   
     scoredAdvisors.sort((a, b) => b.score - a.score);
+    
+
     const top3 = scoredAdvisors.slice(0, 3);
 
+  
     const matchesToSave = top3.map(item => {
       return this.matchRepo.create({
         quizResponseId: savedResponse.id,
