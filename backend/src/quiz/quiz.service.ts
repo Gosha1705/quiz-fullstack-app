@@ -21,29 +21,36 @@ export class QuizService {
 
     
     const scoredAdvisors = advisors.map(advisor => {
-      let score = 0;
+      
+      let score = 40;
+
+     
+      const userAssets = Number(answers.assets || answers.capital || answers.netWorth || 0);
+      
+      if (userAssets >= advisor.minAssetThreshold) {
+        score += 30; 
+      } else {
+        score += 5;  
+      }
 
     
-      const userAssets = Number(answers.assets || answers.capital || 0);
-      
-   
-      if (userAssets >= advisor.minAssetThreshold) {
-        score += 50;
-      } else {
-      
-        score -= 50; 
-      }
-
-   
       const userGoal = answers.goal || answers.interest || answers.specialization || "";
       
-     
-      if (advisor.specializations && advisor.specializations.includes(userGoal)) {
-        score += 40;
+   
+      if (advisor.specializations) {
+        const hasMatch = advisor.specializations.some(spec => 
+          String(spec).toLowerCase().includes(String(userGoal).toLowerCase())
+        );
+        if (hasMatch) {
+          score += 20;
+        }
       }
 
+    
+      score += Math.floor(Math.random() * 9) + 1;
+
    
-      score += Math.floor(Math.random() * 5);
+      score = Math.min(99, Math.max(1, score));
 
       return { advisor, score };
     });
