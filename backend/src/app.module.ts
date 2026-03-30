@@ -8,16 +8,16 @@ import { QuizModule } from './quiz/quiz.module';
 import { MessagesModule } from './messages/messages.module';
 @Module({
   imports: [
-    ConfigModule.forRoot({isGlobal: true}), //читаем env
+    ConfigModule.forRoot({isGlobal: true}), 
    TypeOrmModule.forRoot({
   type: 'postgres',
-  // Вставь свою ссылку Neon внутри кавычек:
+  
   url: 'postgresql://neondb_owner:npg_o7NWzlYGwvV2@ep-curly-sky-adpotklx-pooler.c-2.us-east-1.aws.neon.tech/neondb?sslmode=require',
   ssl: {
     rejectUnauthorized: false,
   },
   autoLoadEntities: true,
-  synchronize: false, // Оставь как было в твоем коде (true или false)
+  synchronize: false, 
 }),
     AdvisorsModule,
     MessagesModule,
